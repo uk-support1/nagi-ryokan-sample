@@ -654,53 +654,87 @@
 
   /* Final CTA */
   .final {
-    text-align: center;
+    position: relative;
+    overflow: hidden;
     background: linear-gradient(160deg, #313d26 0%, #232c1c 100%);
-    padding: 140px 0 100px;
+    padding: 130px 0;
     color: #fbf8f2;
   }
-  .final-line {
-    width: 1px; height: 60px;
-    background: var(--moss-light);
-    margin: 0 auto 36px;
+  .final-photo {
+    position: absolute;
+    top: 0; left: 0;
+    width: 38%; height: 100%;
+    overflow: hidden;
+    opacity: 0.28;
+  }
+  .final-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.4) brightness(0.9);
+  }
+  .final-photo::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(to left, #232c1c 0%, rgba(35,44,28,0.3) 45%, transparent 100%);
+  }
+  .final-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: end;
+  }
+  @media (max-width: 880px) { .final-grid { grid-template-columns: 1fr; gap: 56px; } }
+  .final-phone-block {
+    text-align: right;
+  }
+  @media (max-width: 880px) { .final-phone-block { text-align: left; } }
+  .final-eyebrow {
+    font-family: var(--font-serif-en);
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--moss-light);
+    text-transform: uppercase;
+    margin-bottom: 22px;
   }
   .final-msg {
     font-family: var(--font-serif-jp);
-    font-size: clamp(22px, 2.6vw, 28px);
-    line-height: 1.9;
-    letter-spacing: 0.08em;
-    margin-bottom: 48px;
-  }
-  .final-msg .accent { color: var(--moss-light); }
-  .final-phone {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 22px 56px;
-    border: 1px solid rgba(202, 214, 190, 0.3);
-    background: rgba(251,248,242,0.06);
-    box-shadow: 0 20px 50px -15px rgba(0,0,0,0.4);
-    transition: all .35s;
-  }
-  .final-phone:hover {
-    background: rgba(251,248,242,0.11);
-    border-color: rgba(202, 214, 190, 0.55);
-    transform: translateY(-2px);
-  }
-  .final-phone .num {
-    font-family: var(--font-serif-en);
-    font-size: clamp(28px, 3.2vw, 36px);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.8;
     letter-spacing: 0.06em;
   }
-  .final-phone .label {
+  .final-msg .accent { color: var(--moss-light); }
+  .final-phone-inner {
+    display: inline-block;
+    border-right: 1px solid rgba(202, 214, 190, 0.35);
+    padding-right: 26px;
+  }
+  @media (max-width: 880px) {
+    .final-phone-inner { border-right: none; border-left: 1px solid rgba(202, 214, 190, 0.35); padding-right: 0; padding-left: 26px; }
+  }
+  .final-phone-inner .label {
+    display: block;
     font-family: var(--font-serif-en);
     font-size: 11px;
     letter-spacing: 0.4em;
     color: var(--moss-light);
-    margin-bottom: 4px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
   }
-  .final-phone .hours {
+  .final-phone-inner a.num {
+    display: inline-block;
+    font-family: var(--font-serif-en);
+    font-size: clamp(28px, 3.2vw, 38px);
+    color: #fbf8f2;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s, color .3s;
+  }
+  .final-phone-inner a.num:hover { color: var(--moss-light); border-color: var(--moss-light); }
+  .final-phone-inner .hours {
+    display: block;
+    margin-top: 10px;
     font-family: var(--font-serif-jp);
     font-size: 11px;
     letter-spacing: 0.16em;
@@ -994,20 +1028,23 @@
 
 <!-- ============================ Final CTA ============================ -->
 <section class="final">
+  <div class="final-photo"><img src="assets/room-sunlit.jpg" alt="" /></div>
   <div class="container">
-    <div class="reveal"><div class="final-line"></div></div>
-    <div class="reveal" style="--rd:.10s;">
-      <p class="final-msg">
-        何も<span class="accent">ない</span>一日を、<br/>
-        予約する。
-      </p>
-    </div>
-    <div class="reveal" style="--rd:.25s;">
-      <a href="tel:0570-XXX-XXX" class="final-phone">
-        <span class="label">RESERVATION</span>
-        <span class="num">0570-XXX-XXX</span>
-        <span class="hours">9:00 — 18:00 / 一日一組限定</span>
-      </a>
+    <div class="final-grid">
+      <div class="reveal" style="--rd:.05s;">
+        <div class="final-eyebrow">Vacancy</div>
+        <p class="final-msg">
+          何も<span class="accent">ない</span>一日を、<br/>
+          予約する。
+        </p>
+      </div>
+      <div class="reveal final-phone-block" style="--rd:.2s;">
+        <div class="final-phone-inner">
+          <span class="label">Reservation</span>
+          <a href="tel:0570-XXX-XXX" class="num">0570-XXX-XXX</a>
+          <span class="hours">9:00 — 18:00　一日一組限定</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
