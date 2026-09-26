@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>凪 -NAGI-｜何もしない、を贅沢に。</title>
+  <meta name="description" content="山あいの一日一組の宿、凪 -NAGI-。何もしない一日を、時間の流れとともに。" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="googlebot" content="noindex,nofollow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #faf7f1;
+    --bg-2: #f1ece0;
+    --bg-3: #e9e2d2;
+    --ink: #2b2b26;
+    --ink-soft: #5d5b4f;
+    --moss: #5f6f52;
+    --moss-deep: #45523c;
+    --moss-light: #97a583;
+    --line: rgba(43, 43, 38, 0.14);
+    --max: 1180px;
+    --font-serif-en: "Cormorant Garamond", "Shippori Mincho", serif;
+    --font-serif-jp: "Shippori Mincho", "Cormorant Garamond", serif;
+    --font-sans: "Noto Sans JP", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-serif-jp);
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.9;
+    font-feature-settings: "palt";
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, video { max-width: 100%; display: block; }
+  button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  .container { max-width: var(--max); margin: 0 auto; padding: 0 28px; position: relative; }
+  section { position: relative; }
+
+  ::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 1.3s cubic-bezier(.2,.7,.2,1), transform 1.3s cubic-bezier(.2,.7,.2,1); transition-delay: var(--rd, 0s); }
+  .reveal.is-in { opacity: 1; transform: translateY(0); }
+
+  /* ---------- Header ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(20,22,16,0.4) 0%, rgba(20,22,16,0) 100%);
+    transition: background .3s, border-color .3s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled { background: rgba(250,247,241,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav.scrolled .brand, .nav.scrolled .nav-back { color: var(--ink); }
+  .brand {
+    font-family: var(--font-serif-en);
+    font-size: 19px;
+    letter-spacing: 0.34em;
+    color: #fff;
+    font-weight: 500;
+    transition: color .3s;
+  }
+  .nav-back {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.85);
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) {
+    .nav { padding: 20px 18px; }
+    .brand { font-size: 15px; letter-spacing: 0.22em; }
+    .nav-back { font-size: 10px; letter-spacing: 0.08em; }
+  }
+  .nav.scrolled .nav-back { color: var(--ink-soft); }
+  .nav-back:hover { color: var(--moss); }
+
+  /* ---------- Time rail (desktop only) ---------- */
+  .time-rail {
+    position: fixed;
+    right: 26px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 45;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 22px;
+  }
+  .time-rail::before {
+    content: "";
+    position: absolute; top: -30px; bottom: -30px; left: 50%;
+    width: 1px; background: rgba(255,255,255,0.25);
+    transform: translateX(-50%);
+    z-index: -1;
+  }
+  body.on-light .time-rail::before { background: rgba(43,43,38,0.15); }
+  .time-dot {
+    position: relative;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    transition: background .3s, transform .3s;
+    cursor: pointer;
+  }
+  body.on-light .time-dot { background: rgba(43,43,38,0.28); }
+  .time-dot .tt {
+    position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-serif-en);
+    font-size: 11px; letter-spacing: 0.12em;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.75);
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+  }
+  body.on-light .time-dot .tt { color: var(--ink-soft); }
+  .time-dot.active { background: #fff; transform: scale(1.5); }
+  body.on-light .time-dot.active { background: var(--moss); }
+  .time-dot.active .tt { opacity: 1; }
+  @media (max-width: 980px) { .time-rail { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .hero-media {
+    position: absolute; inset: 0; z-index: 0;
+    background: #14150f;
+    overflow: hidden;
+  }
+  .hero-media video {
+    width: 100%; height: 100%; object-fit: cover;
+    transform: scale(1.02);
+    filter: brightness(1.2) saturate(1.08);
+  }
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      radial-gradient(ellipse at 50% 42%, rgba(20,26,14,0.06) 0%, rgba(20,26,14,0.22) 62%, rgba(20,26,14,0.5) 100%),
+      linear-gradient(to bottom, rgba(20,26,14,0.32) 0%, rgba(20,26,14,0.02) 30%, rgba(20,26,14,0.05) 64%, rgba(20,26,14,0.48) 100%);
+  }
+
+  /* drifting light motes */
+  .mote-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .mote {
+    position: absolute;
+    width: var(--s, 4px); height: var(--s, 4px);
+    border-radius: 50%;
+    background: rgba(255, 244, 214, 0.85);
+    box-shadow: 0 0 6px 1px rgba(255, 244, 214, 0.5);
+    opacity: 0;
+    animation: moteFloat var(--dur, 14s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    left: var(--x, 50%);
+    bottom: -5%;
+  }
+  @keyframes moteFloat {
+    0%   { opacity: 0; transform: translate(0, 0); }
+    8%   { opacity: .9; }
+    50%  { transform: translate(var(--drift, 30px), -55vh); }
+    92%  { opacity: .5; }
+    100% { opacity: 0; transform: translate(calc(var(--drift, 30px) * 2), -110vh); }
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 3;
+    max-width: 740px;
+    padding: 0 28px;
+    color: #fbf8f2;
+    text-shadow: 0 2px 18px rgba(20,26,14,0.35), 0 1px 4px rgba(20,26,14,0.3);
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeIn 1.3s ease-out .7s forwards;
+  }
+  .hero-eyebrow .line {
+    width: 0; height: 1px;
+    background: rgba(251,248,242,0.7);
+    opacity: 0;
+  }
+  .hero-eyebrow .line:first-child  { animation: lineDrawL 1.6s cubic-bezier(.4,0,.2,1) 1.0s forwards; }
+  .hero-eyebrow .line:last-child   { animation: lineDrawR 1.6s cubic-bezier(.4,0,.2,1) 1.0s forwards; }
+  .hero-eyebrow .label {
+    font-family: var(--font-serif-en);
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  @keyframes lineDrawL {
+    0%   { width: 0;  opacity: 0; transform: translateX(-140px); }
+    50%  { width: 70px; opacity: 1; }
+    100% { width: 52px; opacity: 1; transform: translateX(0); }
+  }
+  @keyframes lineDrawR {
+    0%   { width: 0;  opacity: 0; transform: translateX(140px); }
+    50%  { width: 70px; opacity: 1; }
+    100% { width: 52px; opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .hero-brand-name {
+    font-family: var(--font-serif-en);
+    font-size: clamp(24px, 3.2vw, 30px);
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeIn 1.4s ease-out 1.3s forwards;
+  }
+  .hero-since {
+    font-family: var(--font-serif-jp);
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    color: rgba(251,248,242,0.75);
+    margin-bottom: 34px;
+    opacity: 0;
+    animation: fadeIn 1.4s ease-out 1.5s forwards;
+  }
+  .hero-title {
+    font-family: var(--font-serif-jp);
+    font-weight: 600;
+    font-size: clamp(34px, 5.6vw, 58px);
+    line-height: 1.6;
+    letter-spacing: 0.06em;
+    margin-bottom: 30px;
+  }
+  .hero-title .char {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(9px);
+    animation: charIn 1.9s ease forwards;
+    will-change: filter, opacity;
+  }
+  @keyframes charIn {
+    0%   { opacity: 0; filter: blur(9px); }
+    100% { opacity: 1; filter: blur(0); }
+  }
+
+  .hero-ornament {
+    width: 0;
+    height: 1px;
+    background: rgba(251,248,242,0.85);
+    margin: 0 auto 32px;
+    animation: ornamentExpand 1.8s cubic-bezier(.4,0,.2,1) 3.1s forwards;
+  }
+  @keyframes ornamentExpand {
+    0%   { width: 0; }
+    100% { width: 240px; }
+  }
+
+  .hero-lede {
+    font-family: var(--font-serif-jp);
+    font-weight: 300;
+    font-size: clamp(14px, 1.5vw, 16px);
+    line-height: 2.2;
+    color: rgba(251,248,242,0.85);
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeIn 1.6s ease-out 3.1s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 34px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    font-family: var(--font-serif-en);
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: rgba(251,248,242,0.75);
+    opacity: 0;
+    animation: fadeIn 1.4s ease-out 4s forwards;
+  }
+  .hero-scroll::after {
+    content: "";
+    display: block;
+    width: 1px; height: 40px;
+    background: rgba(251,248,242,0.7);
+    margin: 12px auto 0;
+    animation: scrollLine 2.6s ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes scrollLine {
+    0%   { transform: scaleY(0); }
+    50%  { transform: scaleY(1); }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ---------- Generic section ---------- */
+  .sec { padding: 130px 0; position: relative; }
+  .sec-time {
+    text-align: center;
+    font-family: var(--font-serif-en);
+    font-size: 13px;
+    letter-spacing: 0.42em;
+    color: var(--moss);
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .sec-title {
+    text-align: center;
+    font-family: var(--font-serif-jp);
+    font-weight: 600;
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: 0.08em;
+    margin-bottom: 68px;
+    line-height: 1.6;
+  }
+  .sec-title .ornament {
+    display: block;
+    width: 52px; height: 1px;
+    background: var(--moss);
+    margin: 26px auto 0;
+  }
+
+  /* Arrival */
+  .arrival { background: var(--bg-2); }
+  .phil-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: center;
+  }
+  @media (max-width: 880px) { .phil-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .phil-photo {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .phil-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .phil-text {
+    font-family: var(--font-serif-jp);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 2.5;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  .phil-text p + p { margin-top: 1.5em; }
+  .phil-text em {
+    color: var(--moss-deep);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Rooms — horizontal swipe gallery */
+  .rooms-rail {
+    display: flex;
+    gap: 28px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    margin: 0 -28px;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+  .room-panel {
+    flex: 0 0 auto;
+    width: min(72vw, 620px);
+    scroll-snap-align: center;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  @media (max-width: 640px) { .room-panel { width: 86vw; } }
+  .room-thumb {
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background: var(--bg-3);
+  }
+  .room-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .room-panel:hover .room-thumb img { transform: scale(1.05); }
+  .room-body { padding: 32px 34px 38px; }
+  .room-num {
+    font-family: var(--font-serif-en);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--moss);
+    margin-bottom: 12px;
+  }
+  .room-name-jp {
+    font-family: var(--font-serif-jp);
+    font-size: 25px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+  }
+  .room-name-en {
+    font-family: var(--font-serif-en);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--moss);
+    margin-bottom: 20px;
+  }
+  .room-desc {
+    font-family: var(--font-serif-jp);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 2.1;
+    color: var(--ink-soft);
+  }
+  .room-price {
+    margin-top: 20px;
+    font-family: var(--font-serif-en);
+    font-size: 14px;
+    color: var(--moss-deep);
+    letter-spacing: 0.06em;
+  }
+  .rooms-hint {
+    text-align: center;
+    font-family: var(--font-serif-en);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--ink-soft);
+    opacity: 0.6;
+    margin-top: 28px;
+  }
+  .rooms-dots { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+  .rooms-dots .d { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background .3s; }
+  .rooms-dots .d.active { background: var(--moss); }
+
+  /* Feature (Bath / Cuisine) */
+  .feature.alt-bg { background: var(--bg-2); }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 68px;
+    align-items: center;
+  }
+  .feature-grid.reverse { grid-template-columns: 1fr 1.1fr; }
+  .feature-grid.reverse .feature-photo { order: 2; }
+  .feature-grid.reverse .feature-body { order: 1; }
+  @media (max-width: 880px) {
+    .feature-grid, .feature-grid.reverse { grid-template-columns: 1fr; gap: 36px; }
+    .feature-grid.reverse .feature-photo, .feature-grid.reverse .feature-body { order: 0; }
+  }
+  .feature-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .feature-photo img { width: 100%; height: 112%; object-fit: cover; display: block; will-change: transform; }
+
+  /* rising steam wisps (Bath section) */
+  .steam-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; mix-blend-mode: screen; }
+  .steam {
+    position: absolute;
+    bottom: 10%;
+    left: var(--x, 50%);
+    width: var(--s, 60px); height: calc(var(--s, 60px) * 2.1);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.32) 38%, rgba(255,255,255,0) 72%);
+    filter: blur(8px);
+    opacity: 0;
+    animation: steamRise var(--dur, 15s) ease-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes steamRise {
+    0%   { opacity: 0; transform: translateY(0) scaleX(1); }
+    16%  { opacity: .32; }
+    60%  { opacity: .16; }
+    100% { opacity: 0; transform: translateY(-190px) scaleX(1.4); }
+  }
+  .feature-tag {
+    font-family: var(--font-serif-en);
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    color: var(--moss);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .feature-title {
+    font-family: var(--font-serif-jp);
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 26px;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+  }
+  .feature-text {
+    font-family: var(--font-serif-jp);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 2.3;
+    color: var(--ink-soft);
+  }
+  .feature-text p + p { margin-top: 1em; }
+
+  /* Night interlude */
+  .night {
+    background: #14150f;
+    color: #eee9dd;
+    padding: 170px 0 150px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .night-sky { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .star {
+    position: absolute;
+    width: var(--sz, 2px); height: var(--sz, 2px);
+    background: #fff;
+    border-radius: 50%;
+    opacity: var(--o, .5);
+    box-shadow: 0 0 var(--glow, 0px) rgba(255,255,255,0.8);
+    animation: twinkle var(--dur, 4s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--o, .5); transform: scale(1); }
+    50% { opacity: calc(var(--o, .5) * 0.15); transform: scale(0.8); }
+  }
+  .moon {
+    width: 80px; height: 80px;
+    margin: 0 auto 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .moon img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 16px rgba(238,233,221,0.25));
+  }
+  .night .container { position: relative; z-index: 2; }
+  .night-tag {
+    font-family: var(--font-serif-en);
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--moss-light);
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+  .night-msg {
+    font-family: var(--font-serif-jp);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 2;
+    letter-spacing: 0.08em;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .night-msg .accent { color: var(--moss-light); }
+  .night-sub {
+    margin-top: 34px;
+    font-family: var(--font-serif-jp);
+    font-weight: 300;
+    font-size: 14px;
+    color: rgba(238,233,221,0.55);
+    letter-spacing: 0.1em;
+  }
+
+  /* Morning epilogue */
+  .morning { padding: 120px 0; text-align: center; }
+  .sun-line {
+    position: relative;
+    width: 200px; height: 1px;
+    background: var(--line);
+    margin: 0 auto 44px;
+  }
+  .sun-line::before {
+    content: "";
+    position: absolute; left: 50%; top: 50%;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--moss);
+    transform: translate(-50%, -50%);
+    animation: sunRise 3s ease-in-out infinite alternate;
+  }
+  @keyframes sunRise {
+    0% { transform: translate(-50%, -50%) translateY(6px); opacity: .6; }
+    100% { transform: translate(-50%, -50%) translateY(-6px); opacity: 1; }
+  }
+  .morning-tag {
+    font-family: var(--font-serif-en);
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: var(--moss);
+    margin-bottom: 26px;
+    text-transform: uppercase;
+  }
+  .morning-msg {
+    font-family: var(--font-serif-jp);
+    font-weight: 500;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 2;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* Access */
+  .access { background: var(--bg-2); }
+  .access-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 880px) { .access-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .access-block {
+    border: 1px solid var(--line);
+    padding: 36px 32px;
+    background: var(--bg);
+  }
+  .access-label {
+    font-family: var(--font-serif-en);
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--moss);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .access-content {
+    font-family: var(--font-serif-jp);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 2;
+    color: var(--ink-soft);
+  }
+  .access-content strong { font-weight: 600; color: var(--ink); }
+
+  /* Final CTA */
+  .final {
+    text-align: center;
+    background: var(--ink);
+    padding: 140px 0 100px;
+    color: #fbf8f2;
+  }
+  .final-line {
+    width: 1px; height: 60px;
+    background: var(--moss-light);
+    margin: 0 auto 36px;
+  }
+  .final-msg {
+    font-family: var(--font-serif-jp);
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.9;
+    letter-spacing: 0.08em;
+    margin-bottom: 48px;
+  }
+  .final-msg .accent { color: var(--moss-light); }
+  .final-phone {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 22px 56px;
+    border: 1px solid rgba(251,248,242,0.35);
+    background: rgba(251,248,242,0.05);
+    transition: all .35s;
+  }
+  .final-phone:hover {
+    background: rgba(251,248,242,0.1);
+    border-color: rgba(251,248,242,0.6);
+    transform: translateY(-2px);
+  }
+  .final-phone .num {
+    font-family: var(--font-serif-en);
+    font-size: clamp(28px, 3.2vw, 36px);
+    letter-spacing: 0.06em;
+  }
+  .final-phone .label {
+    font-family: var(--font-serif-en);
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--moss-light);
+    margin-bottom: 4px;
+  }
+  .final-phone .hours {
+    font-family: var(--font-serif-jp);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: rgba(251,248,242,0.6);
+  }
+
+  /* Footer */
+  .footer {
+    background: #201f1a;
+    padding: 32px 0;
+    text-align: center;
+    color: rgba(251,248,242,0.7);
+  }
+  .footer-back {
+    font-family: var(--font-serif-en);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--moss-light);
+    transition: color .2s;
+  }
+  .footer-back:hover { color: #fbf8f2; }
+  .footer-copy {
+    font-family: var(--font-serif-en);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+    margin-top: 12px;
+  }
+
+  .sec-bg-text {
+    position: absolute;
+    font-family: var(--font-serif-en);
+    font-weight: 300;
+    font-size: clamp(100px, 16vw, 210px);
+    letter-spacing: 0.14em;
+    color: rgba(95, 111, 82, 0.06);
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+    user-select: none;
+    line-height: 1;
+  }
+  .sec > .container { z-index: 2; }
+
+  .sample-banner {
+    position: fixed;
+    bottom: 16px; left: 16px;
+    z-index: 60;
+    background: rgba(43,43,38,0.85);
+    border: 1px solid rgba(251,248,242,0.2);
+    padding: 8px 14px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: rgba(251,248,242,0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  @media (max-width: 600px) { .sample-banner { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="brand">凪 -NAGI-</div>
+  <a href="../works.html" class="nav-back">← BACK TO PORTFOLIO</a>
+</header>
+
+<nav class="time-rail" id="timeRail">
+  <div class="time-dot" data-target="hero"><span class="tt">15:00</span></div>
+  <div class="time-dot" data-target="sec-arrival"><span class="tt">15:00 到着</span></div>
+  <div class="time-dot" data-target="sec-rooms"><span class="tt">16:30 部屋</span></div>
+  <div class="time-dot" data-target="sec-bath"><span class="tt">17:30 湯</span></div>
+  <div class="time-dot" data-target="sec-cuisine"><span class="tt">19:00 膳</span></div>
+  <div class="time-dot" data-target="sec-night"><span class="tt">21:00 静寂</span></div>
+  <div class="time-dot" data-target="sec-morning"><span class="tt">7:00 朝</span></div>
+</nav>
+
+<!-- ============================ Hero ============================ -->
+<section class="hero" id="hero">
+  <div class="hero-media">
+    <video id="heroVid" muted playsinline preload="auto">
+      <source src="assets/hero.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="mote-layer" id="moteLayer"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="line"></span>
+      <span class="label">One Party A Day</span>
+      <span class="line"></span>
+    </div>
+    <div class="hero-brand-name">凪 -NAGI-</div>
+    <div class="hero-since">山あいの、一軒宿</div>
+
+    <h1 class="hero-title" id="heroTitle">何もしない、を贅沢に。</h1>
+
+    <div class="hero-ornament"></div>
+
+    <p class="hero-lede">
+      チェックインは15時。あとは、何も決めない。<br />
+      山の音だけが聞こえる場所で、一日が暮れていきます。
+    </p>
+  </div>
+
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<!-- ============================ 15:00 到着 ============================ -->
+<section class="sec arrival" id="sec-arrival">
+  <div class="sec-bg-text">15:00</div>
+  <div class="container">
+    <div class="reveal" style="--rd:.05s;"><div class="sec-time">15:00 — 到着</div></div>
+    <div class="reveal" style="--rd:.15s;">
+      <h2 class="sec-title">何も、しないでいい。<span class="ornament"></span></h2>
+    </div>
+    <div class="phil-grid">
+      <div class="reveal phil-photo" style="--rd:.20s;">
+        <img src="assets/room-garden.jpg" alt="坪庭を眺めながら過ごす、静かな時間" loading="lazy" />
+      </div>
+      <div class="reveal phil-text" style="--rd:.30s;">
+        <p>玄関をくぐったら、時計を外してください。<br/>ここから先の予定は、何もありません。</p>
+        <p>山の音、川の音、鳥の声。<br/><em>凪</em>という名の通り、ここには波風がありません。</p>
+        <p>何もしないという、いちばん贅沢な過ごし方を。<br/>一日一組だけの宿で、静かにお迎えします。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 16:30 部屋 ============================ -->
+<section class="sec" id="sec-rooms">
+  <div class="sec-bg-text">ROOMS</div>
+  <div class="container">
+    <div class="reveal"><div class="sec-time">16:30 — 部屋</div></div>
+    <div class="reveal" style="--rd:.12s;">
+      <h2 class="sec-title">三つの、間。<span class="ornament"></span></h2>
+    </div>
+  </div>
+
+  <div class="reveal rooms-rail" id="roomsRail" style="--rd:.2s;">
+    <div class="room-panel">
+      <div class="room-thumb"><img src="assets/room-sunlit.jpg" alt="陽の間" loading="lazy" /></div>
+      <div class="room-body">
+        <div class="room-num">No. 01</div>
+        <div class="room-name-jp">陽の間</div>
+        <div class="room-name-en">HI NO MA</div>
+        <p class="room-desc">障子越しに差し込む光だけで、一日の時間がわかる部屋。何も置かない、何もしないための八畳です。</p>
+        <div class="room-price">¥68,000〜 / 1泊2食・2名</div>
+      </div>
+    </div>
+    <div class="room-panel">
+      <div class="room-thumb"><img src="assets/room-garden.jpg" alt="碧の間" loading="lazy" /></div>
+      <div class="room-body">
+        <div class="room-num">No. 02</div>
+        <div class="room-name-jp">碧の間</div>
+        <div class="room-name-en">AO NO MA</div>
+        <p class="room-desc">坪庭を独り占めできる、灯りを落とした静かな間。夜は、ただ庭を眺めるためだけにあります。</p>
+        <div class="room-price">¥82,000〜 / 1泊2食・2名</div>
+      </div>
+    </div>
+    <div class="room-panel">
+      <div class="room-thumb"><img src="assets/room-tatami.jpg" alt="庭の間" loading="lazy" /></div>
+      <div class="room-body">
+        <div class="room-num">No. 03</div>
+        <div class="room-name-jp">庭の間</div>
+        <div class="room-name-en">NIWA NO MA</div>
+        <p class="room-desc">縁側の先に、四季の庭。時計の針よりゆっくりと、時間が流れていきます。</p>
+        <div class="room-price">¥95,000〜 / 1泊2食・2名</div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="rooms-dots" id="roomsDots">
+      <div class="d active"></div><div class="d"></div><div class="d"></div>
+    </div>
+    <p class="rooms-hint">← SWIPE →</p>
+  </div>
+</section>
+
+<!-- ============================ 17:30 湯 ============================ -->
+<section class="sec feature alt-bg" id="sec-bath">
+  <div class="sec-bg-text">17:30</div>
+  <div class="container">
+    <div class="feature-grid">
+      <div class="reveal feature-photo" style="--rd:.10s;">
+        <img class="parallax-img" src="assets/onsen.jpg" alt="木造の露天風呂に湯気が立ちのぼる" loading="lazy" />
+        <div class="steam-layer" id="steamLayer"></div>
+      </div>
+      <div class="reveal feature-body" style="--rd:.25s;">
+        <div class="feature-tag">17:30 — Bath</div>
+        <h2 class="feature-title">湯を、独り占め。</h2>
+        <div class="feature-text">
+          <p>客室ごとに設けた、露天の湯船。</p>
+          <p>誰にも会わず、何も予定せず、ただ湯に浸かる。山の稜線が茜色に染まるまで、ここにいていいのです。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 19:00 膳 ============================ -->
+<section class="sec feature" id="sec-cuisine">
+  <div class="sec-bg-text">19:00</div>
+  <div class="container">
+    <div class="feature-grid reverse">
+      <div class="reveal feature-photo" style="--rd:.10s;">
+        <img class="parallax-img" src="assets/cuisine.jpg" alt="旬の食材を使った会席料理" loading="lazy" />
+      </div>
+      <div class="reveal feature-body" style="--rd:.25s;">
+        <div class="feature-tag">19:00 — Cuisine</div>
+        <h2 class="feature-title">旬を、そのままに。</h2>
+        <div class="feature-text">
+          <p>里で採れた山の幸、朝獲れの魚介。</p>
+          <p>手を加えすぎない、季節そのものの味わいを。器も、季節ごとに変わります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 21:00 静寂 ============================ -->
+<section class="night" id="sec-night">
+  <div class="night-sky" id="nightSky"></div>
+  <div class="container">
+    <div class="reveal moon" style="--rd:.05s;">
+      <img src="assets/moon.png" alt="夜空に浮かぶ月" loading="lazy" />
+    </div>
+    <div class="reveal" style="--rd:.15s;"><div class="night-tag">21:00 — Silence</div></div>
+    <div class="reveal" style="--rd:.25s;">
+      <p class="night-msg">
+        灯りを落とせば、<span class="accent">聞こえてくるもの</span>がある。<br/>
+        虫の声、川の音、自分の息づかい。
+      </p>
+    </div>
+    <div class="reveal" style="--rd:.35s;">
+      <p class="night-sub">何も予定のない夜が、いちばん長く感じられますように。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 翌7:00 朝 ============================ -->
+<section class="morning" id="sec-morning">
+  <div class="container">
+    <div class="reveal" style="--rd:.05s;"><div class="morning-tag">翌 7:00 — Morning</div></div>
+    <div class="reveal sun-line" style="--rd:.15s;"></div>
+    <div class="reveal" style="--rd:.25s;">
+      <p class="morning-msg">
+        目覚まし時計は、置いていません。<br/>
+        鳥の声で目が覚める朝を、どうぞ。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Access ============================ -->
+<section class="sec access">
+  <div class="sec-bg-text">ACCESS</div>
+  <div class="container">
+    <div class="reveal"><div class="sec-time">Access &amp; Stay</div></div>
+    <div class="reveal" style="--rd:.12s;">
+      <h2 class="sec-title">宿までの行き方<span class="ornament"></span></h2>
+    </div>
+    <div class="access-grid">
+      <div class="reveal access-block" style="--rd:.15s;">
+        <div class="access-label">Address</div>
+        <div class="access-content">
+          〒XXX-XXXX<br/>
+          ○○県○○郡○○町 X-X-X<br/><br/>
+          ○○ICより車で40分<br/>
+          最寄駅より送迎あり（要予約）
+        </div>
+      </div>
+      <div class="reveal access-block" style="--rd:.30s;">
+        <div class="access-label">Stay</div>
+        <div class="access-content">
+          <strong>チェックイン</strong>　15:00<br/>
+          <strong>チェックアウト</strong>　11:00<br/><br/>
+          <strong>定員</strong>　一日一組限定（3室）<br/>
+          <span style="font-size:13px;">※ 素泊まりのご用意はございません</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Final CTA ============================ -->
+<section class="final">
+  <div class="container">
+    <div class="reveal"><div class="final-line"></div></div>
+    <div class="reveal" style="--rd:.10s;">
+      <p class="final-msg">
+        何も<span class="accent">ない</span>一日を、<br/>
+        予約する。
+      </p>
+    </div>
+    <div class="reveal" style="--rd:.25s;">
+      <a href="tel:0570-XXX-XXX" class="final-phone">
+        <span class="label">RESERVATION</span>
+        <span class="num">0570-XXX-XXX</span>
+        <span class="hours">9:00 — 18:00 / 一日一組限定</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Footer ============================ -->
+<footer class="footer">
+  <a href="../works.html" class="footer-back">← BACK TO PORTFOLIO</a>
+  <div class="footer-copy">SAMPLE LP — 凪 -NAGI- (Fictional)</div>
+</footer>
+
+<div class="sample-banner">SAMPLE LP — 架空の宿名によるオリジナル制作デモ</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var nav = document.getElementById('nav');
+  function onScroll(){
+    if (window.scrollY > 8) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* Hero title char split */
+  var titleEl = document.getElementById('heroTitle');
+  if (titleEl) {
+    var text = titleEl.textContent;
+    titleEl.textContent = '';
+    Array.prototype.forEach.call(text, function(ch, i){
+      var s = document.createElement('span');
+      s.className = 'char';
+      s.style.animationDelay = (1.7 + i * 0.02) + 's';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      titleEl.appendChild(s);
+    });
+  }
+
+  /* Hero video: seek to tail, slow-mo, freeze on last frame */
+  var vid = document.getElementById('heroVid');
+  if (vid) {
+    var SLOW_RATE = 0.55, TAIL_RATIO = 0.45, TAIL_SEC_MAX = 5.0;
+    var startTime = 0, endTime = 0, inited = false, stopped = false, seekReady = false, playRequested = false, seekFallbackId = 0;
+
+    function playPreparedVideo(){
+      if (!seekReady || stopped || playRequested) return;
+      playRequested = true;
+      var p = vid.play();
+      if (p && typeof p.then === 'function') { p.catch(function(){ playRequested = false; }); }
+    }
+    function setupAndPlay(){
+      var dur = vid.duration;
+      if (!isFinite(dur) || dur <= 0) return;
+      stopped = false; seekReady = false; playRequested = false;
+      window.clearTimeout(seekFallbackId);
+      startTime = Math.max(0, Math.max(dur * (1 - TAIL_RATIO), dur - TAIL_SEC_MAX));
+      endTime = Math.max(startTime + 0.05, dur - 0.05);
+      vid.playbackRate = SLOW_RATE;
+      function cleanup(){ vid.removeEventListener('seeked', onSeeked); window.clearTimeout(seekFallbackId); }
+      function onSeeked(){
+        cleanup();
+        if (Math.abs(vid.currentTime - startTime) > 0.4) return;
+        seekReady = true;
+        playPreparedVideo();
+      }
+      vid.addEventListener('seeked', onSeeked, { once: true });
+      try { vid.currentTime = startTime; } catch(e){ cleanup(); return; }
+      seekFallbackId = window.setTimeout(function(){
+        if (Math.abs(vid.currentTime - startTime) <= 0.4) onSeeked(); else cleanup();
+      }, 1600);
+      inited = true;
+    }
+    if (vid.readyState >= 1) setupAndPlay();
+    else vid.addEventListener('loadedmetadata', setupAndPlay, { once: true });
+
+    vid.addEventListener('timeupdate', function(){
+      if (!inited || stopped) return;
+      if (endTime > 0 && vid.currentTime >= endTime) {
+        stopped = true;
+        try { vid.currentTime = endTime; } catch(e){}
+        vid.pause();
+      }
+    });
+    vid.addEventListener('ended', function(){ stopped = true; vid.pause(); });
+    document.addEventListener('click', function once(){
+      if (!stopped && vid.paused) { if (!inited || !seekReady) setupAndPlay(); else playPreparedVideo(); }
+      document.removeEventListener('click', once);
+    }, { once: true });
+    window.addEventListener('pageshow', function(e){ if (e.persisted) setupAndPlay(); });
+  }
+
+  /* Floating light motes */
+  var moteLayer = document.getElementById('moteLayer');
+  if (moteLayer) {
+    var n = 14;
+    for (var i = 0; i < n; i++) {
+      var m = document.createElement('div');
+      m.className = 'mote';
+      var size = (Math.random() * 3 + 2).toFixed(1);
+      var dur = (Math.random() * 8 + 11).toFixed(1);
+      var delay = (Math.random() * -18).toFixed(1);
+      var x = (Math.random() * 100).toFixed(1);
+      var drift = (Math.random() * 80 - 40).toFixed(0);
+      m.style.setProperty('--s', size + 'px');
+      m.style.setProperty('--dur', dur + 's');
+      m.style.setProperty('--delay', delay + 's');
+      m.style.setProperty('--x', x + '%');
+      m.style.setProperty('--drift', drift + 'px');
+      moteLayer.appendChild(m);
+    }
+  }
+
+  /* Rising steam wisps (Bath) */
+  var steamLayer = document.getElementById('steamLayer');
+  if (steamLayer) {
+    var sn = 11;
+    for (var k = 0; k < sn; k++) {
+      var sw = document.createElement('div');
+      sw.className = 'steam';
+      sw.style.setProperty('--x', (25 + Math.random() * 45).toFixed(1) + '%');
+      sw.style.setProperty('--s', (Math.random() * 45 + 55).toFixed(0) + 'px');
+      sw.style.setProperty('--dur', (Math.random() * 5 + 13).toFixed(1) + 's');
+      sw.style.setProperty('--delay', (Math.random() * -15).toFixed(1) + 's');
+      steamLayer.appendChild(sw);
+    }
+  }
+
+  /* Night starfield */
+  var nightSky = document.getElementById('nightSky');
+  if (nightSky) {
+    var ns = 90;
+    for (var j = 0; j < ns; j++) {
+      var st = document.createElement('div');
+      st.className = 'star';
+      var big = Math.random() < 0.12;
+      st.style.left = (Math.random() * 100) + '%';
+      st.style.top = (Math.random() * 78) + '%';
+      st.style.setProperty('--sz', big ? (Math.random() * 1.2 + 2.2).toFixed(1) + 'px' : (Math.random() * 1 + 1) + 'px');
+      st.style.setProperty('--glow', big ? (Math.random() * 3 + 3).toFixed(0) + 'px' : '0px');
+      st.style.setProperty('--o', (Math.random() * 0.5 + (big ? 0.5 : 0.25)).toFixed(2));
+      st.style.setProperty('--dur', (Math.random() * 3 + 2.5).toFixed(1) + 's');
+      st.style.setProperty('--delay', (Math.random() * -6).toFixed(1) + 's');
+      nightSky.appendChild(st);
+    }
+  }
+
+  /* Reveal on scroll */
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(els, function(el){
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 50) setTimeout(function(){ el.classList.add('is-in'); }, 50);
+      else io.observe(el);
+    });
+  } else {
+    Array.prototype.forEach.call(els, function(el){ el.classList.add('is-in'); });
+  }
+
+  /* Hero parallax */
+  var heroInner = document.querySelector('.hero-inner');
+  var heroEl = document.querySelector('.hero');
+  function parallax(){
+    if (!heroInner || !heroEl) return;
+    var s = window.scrollY;
+    var heroH = heroEl.offsetHeight || 800;
+    if (s < heroH) {
+      heroInner.style.transform = 'translateY(' + (s * 0.3) + 'px)';
+      heroInner.style.opacity = String(Math.max(0, 1 - s / (heroH * 0.7)));
+    }
+  }
+
+  /* Feature image parallax (Bath/Cuisine) */
+  var parallaxImgs = document.querySelectorAll('.parallax-img');
+  function imgParallax(){
+    var vh = window.innerHeight;
+    parallaxImgs.forEach(function(img){
+      var rect = img.parentElement.getBoundingClientRect();
+      var center = rect.top + rect.height / 2;
+      var offset = (center - vh / 2) / vh;
+      var ty = offset * 26;
+      img.style.transform = 'translateY(' + ty.toFixed(1) + 'px)';
+    });
+  }
+
+  var ticking = false;
+  function onScrollAll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      parallax();
+      imgParallax();
+      ticking = false;
+    });
+  }
+  parallax(); imgParallax();
+  window.addEventListener('scroll', onScrollAll, { passive: true });
+  window.addEventListener('resize', onScrollAll);
+
+  /* Time rail: active state + light/dark background detection + click to scroll */
+  var rail = document.getElementById('timeRail');
+  var dots = rail ? Array.prototype.slice.call(rail.querySelectorAll('.time-dot')) : [];
+  var sectionIds = ['hero','sec-arrival','sec-rooms','sec-bath','sec-cuisine','sec-night','sec-morning'];
+  var sectionEls = sectionIds.map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var darkSections = ['hero','sec-night'];
+
+  dots.forEach(function(dot){
+    dot.addEventListener('click', function(){
+      var id = dot.getAttribute('data-target');
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function updateRail(){
+    var mid = window.scrollY + window.innerHeight * 0.5;
+    var currentId = sectionIds[0];
+    sectionEls.forEach(function(el){
+      if (el.offsetTop <= mid) currentId = el.id;
+    });
+    dots.forEach(function(dot){
+      dot.classList.toggle('active', dot.getAttribute('data-target') === currentId);
+    });
+    document.body.classList.toggle('on-light', darkSections.indexOf(currentId) === -1);
+  }
+  updateRail();
+  window.addEventListener('scroll', function(){ requestAnimationFrame(updateRail); }, { passive: true });
+
+  /* Rooms rail dots sync */
+  var roomsRail = document.getElementById('roomsRail');
+  var roomsDots = document.getElementById('roomsDots');
+  if (roomsRail && roomsDots) {
+    var panels = Array.prototype.slice.call(roomsRail.querySelectorAll('.room-panel'));
+    var dEls = Array.prototype.slice.call(roomsDots.querySelectorAll('.d'));
+    roomsRail.addEventListener('scroll', function(){
+      var scrollCenter = roomsRail.scrollLeft + roomsRail.clientWidth / 2;
+      var closest = 0, closestDist = Infinity;
+      panels.forEach(function(p, idx){
+        var pCenter = p.offsetLeft + p.clientWidth / 2;
+        var dist = Math.abs(pCenter - scrollCenter);
+        if (dist < closestDist) { closestDist = dist; closest = idx; }
+      });
+      dEls.forEach(function(d, idx){ d.classList.toggle('active', idx === closest); });
+    }, { passive: true });
+  }
+})();
+</script>
+
+</body>
+</html>
